@@ -1,0 +1,135 @@
+$ mkdir -p D1/D2/D3
+$ ls -R D1
+D1:
+D2
+
+D1/D2:
+D3
+
+D1/D2/D3:
+$ touch D1/D2/file.txt
+$ ls -l D1/D2
+total 4
+drwxr-xr-x 2 eltex-pg1-v8 eltex-pg1-v8 4096 Oct 13 23:21 D3
+-rw-r--r-- 1 eltex-pg1-v8 eltex-pg1-v8    0 Oct 13 23:25 file.txt
+$ echo "abcde" > D1/D2/file.txt
+$ cat D1/D2/file.txt
+abcde
+$ ln -s ../file.txt D1/D2/D3/file_symlink
+$ ln D1/D2/file.txt D1/D2/D3/file_hardlink
+$ ls -li D1/D2 D1/D2/D3
+D1/D2:
+total 8
+393328 drwxr-xr-x 2 eltex-pg1-v8 eltex-pg1-v8 4096 Oct 13 23:34 D3
+393329 -rw-r--r-- 2 eltex-pg1-v8 eltex-pg1-v8    6 Oct 13 23:29 file.txt
+
+D1/D2/D3:
+total 4
+393329 -rw-r--r-- 2 eltex-pg1-v8 eltex-pg1-v8  6 Oct 13 23:29 file_hardlink
+393330 lrwxrwxrwx 1 eltex-pg1-v8 eltex-pg1-v8 11 Oct 13 23:34 file_symlink -> ../file.txt
+$ ls -li D1/D2 D1/D2/D3
+D1/D2:
+total 8
+393328 drwxr-xr-x 2 eltex-pg1-v8 eltex-pg1-v8 4096 Oct 13 23:34 D3
+393329 -rw-r--r-- 2 eltex-pg1-v8 eltex-pg1-v8    6 Oct 13 23:29 file.txt
+
+D1/D2/D3:
+total 4
+393329 -rw-r--r-- 2 eltex-pg1-v8 eltex-pg1-v8  6 Oct 13 23:29 file_hardlink
+393330 lrwxrwxrwx 1 eltex-pg1-v8 eltex-pg1-v8 11 Oct 13 23:34 file_symlink -> ../file.txt
+$ stat -c "%i %h %n" D1/D2/file.txt D1/D2/D3/file_hardlink D1/D2/D3/file_symlink
+393329 2 D1/D2/file.txt
+393329 2 D1/D2/D3/file_hardlink
+393330 1 D1/D2/D3/file_symlink
+$ cat D1/D2/D3/file_symlink
+abcde
+$ cat D1/D2/D3/file_hardlink
+abcde
+$ readlink D1/D2/D3/file_symlink
+../file.txt
+$ mv D1/D2/file.txt D1/file.txt
+$ ls -l D1 D1/D2
+D1:
+total 8
+drwxr-xr-x 3 eltex-pg1-v8 eltex-pg1-v8 4096 Oct 13 23:47 D2
+-rw-r--r-- 2 eltex-pg1-v8 eltex-pg1-v8    6 Oct 13 23:29 file.txt
+
+D1/D2:
+total 4
+drwxr-xr-x 2 eltex-pg1-v8 eltex-pg1-v8 4096 Oct 13 23:34 D3
+$ ls -l D1/D2/D3
+total 4
+-rw-r--r-- 2 eltex-pg1-v8 eltex-pg1-v8  6 Oct 13 23:29 file_hardlink
+lrwxrwxrwx 1 eltex-pg1-v8 eltex-pg1-v8 11 Oct 13 23:34 file_symlink -> ../file.txt
+$ stat -c "%i %h %n" D1/file.txt D1/D2/D3/file_hardlink D1/D2/D3/file_symlink
+393329 2 D1/file.txt
+393329 2 D1/D2/D3/file_hardlink
+393330 1 D1/D2/D3/file_symlink
+$ cat D1/D2/D3/file_hardlink
+abcde
+$ cat D1/D2/D3/file_symlink
+cat: D1/D2/D3/file_symlink: No such file or directory
+$ rm -rf D1/D2
+$ ls -lR D1
+D1:
+total 4
+-rw-r--r-- 1 eltex-pg1-v8 eltex-pg1-v8 6 Oct 13 23:29 file.txt
+$ find / -type f -size +20M 2>/dev/null > ~/${USER}_part3_gt20M.log
+$ find / -type f -size +20M -exec du -h {} + 2>/dev/null
+31M	/usr/bin/x86_64-linux-gnu-lto-dump-12
+31M	/usr/lib/gcc/x86_64-linux-gnu/12/lto1
+32M	/usr/lib/gcc/x86_64-linux-gnu/12/cc1
+30M	/usr/lib/x86_64-linux-gnu/libicudata.so.72.1
+0	/proc/kcore
+33M	/boot/initrd.img-6.1.0-44-amd64
+33M	/boot/initrd.img-6.1.0-50-amd64
+33M	/boot/initrd.img-6.1.0-53-amd64
+41M	/var/log/journal/8247b53b6ae84ae0ad9bb1c96113fd29/system@4f44ef78d53d4cd0a5555898b8d0015b-0000000000179b0c-000659e0105337c7.journal
+25M	/var/log/journal/8247b53b6ae84ae0ad9bb1c96113fd29/system@00065be42e22b64e-29e46ef12bfd5644.journal~
+42M	/var/log/journal/8247b53b6ae84ae0ad9bb1c96113fd29/system@4f44ef78d53d4cd0a5555898b8d0015b-000000000016aef5-0006585775bcfe03.journal
+33M	/var/log/journal/8247b53b6ae84ae0ad9bb1c96113fd29/system@00065b6e0461a953-e594878e03ffcfa9.journal~
+25M	/var/log/journal/8247b53b6ae84ae0ad9bb1c96113fd29/system@00065c4bf168df91-94a074e01b8fde49.journal~
+39M	/var/cache/apt/srcpkgcache.bin
+39M	/var/cache/apt/pkgcache.bin
+48M	/var/lib/apt/lists/deb.debian.org_debian_dists_bookworm_main_binary-amd64_Packages
+49M	/var/lib/apt/lists/deb.debian.org_debian_dists_bookworm_main_source_Sources
+32M	/var/lib/apt/lists/deb.debian.org_debian_dists_bookworm_main_i18n_Translation-en
+$ wc -l ~/${USER}_part3_gt20M.log
+18 /home/eltex-pg1-v8/eltex-pg1-v8_part3_gt20M.log
+$ head -n 20 ~/${USER}_part3_gt20M.log
+/usr/bin/x86_64-linux-gnu-lto-dump-12
+/usr/lib/gcc/x86_64-linux-gnu/12/lto1
+/usr/lib/gcc/x86_64-linux-gnu/12/cc1
+/usr/lib/x86_64-linux-gnu/libicudata.so.72.1
+/proc/kcore
+/boot/initrd.img-6.1.0-44-amd64
+/boot/initrd.img-6.1.0-50-amd64
+/boot/initrd.img-6.1.0-53-amd64
+/var/log/journal/8247b53b6ae84ae0ad9bb1c96113fd29/system@4f44ef78d53d4cd0a5555898b8d0015b-0000000000179b0c-000659e0105337c7.journal
+/var/log/journal/8247b53b6ae84ae0ad9bb1c96113fd29/system@00065be42e22b64e-29e46ef12bfd5644.journal~
+/var/log/journal/8247b53b6ae84ae0ad9bb1c96113fd29/system@4f44ef78d53d4cd0a5555898b8d0015b-000000000016aef5-0006585775bcfe03.journal
+/var/log/journal/8247b53b6ae84ae0ad9bb1c96113fd29/system@00065b6e0461a953-e594878e03ffcfa9.journal~
+/var/log/journal/8247b53b6ae84ae0ad9bb1c96113fd29/system@00065c4bf168df91-94a074e01b8fde49.journal~
+/var/cache/apt/srcpkgcache.bin
+/var/cache/apt/pkgcache.bin
+/var/lib/apt/lists/deb.debian.org_debian_dists_bookworm_main_binary-amd64_Packages
+/var/lib/apt/lists/deb.debian.org_debian_dists_bookworm_main_source_Sources
+/var/lib/apt/lists/deb.debian.org_debian_dists_bookworm_main_i18n_Translation-en
+$ find "$HOME" -type f -mtime -1
+/home/eltex-pg1-v8/.lesshst
+/home/eltex-pg1-v8/eltex-pg1-v8_part.log
+/home/eltex-pg1-v8/eltex-pg1-v8_part.log.bak
+/home/eltex-pg1-v8/D1/file.txt
+/home/eltex-pg1-v8/eltex-pg1-v8_part3.log
+/home/eltex-pg1-v8/.bash_history
+/home/eltex-pg1-v8/eltex-pg1-v8_part3_gt20M.log
+$ date
+Wed Oct 14 12:11:06 AM +07 2026
+$ which find
+/usr/bin/find
+$ file /usr/bin/find
+/usr/bin/find: ELF 64-bit LSB pie executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, BuildID[sha1]=5545a6c7162d325fbe5ffabcbfe4e5521b66ce70, for GNU/Linux 3.2.0, stripped
+$ file /boot/initrd.img*
+/boot/initrd.img-6.1.0-44-amd64: ASCII cpio archive (SVR4 with no CRC)
+/boot/initrd.img-6.1.0-50-amd64: ASCII cpio archive (SVR4 with no CRC)
+/boot/initrd.img-6.1.0-53-amd64: ASCII cpio archive (SVR4 with no CRC)
