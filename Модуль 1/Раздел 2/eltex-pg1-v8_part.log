@@ -1,0 +1,277 @@
+eltex-pg1-v8@eltex-2026-autumn:~$ ls
+ls         lsblk      lscpu        lsinitramfs  lsirq      lslogins     lsmod        lsof         lsusb
+lsattr     lsb_release lsfd        lsipc        lslocks    lsmem        lsns         lspci
+
+eltex-pg1-v8@eltex-2026-autumn:~$ echo $HISTFILESIZE
+2000
+
+eltex-pg1-v8@eltex-2026-autumn:~$ ls -aF "$HOME"
+./  ../  .bash_history  .bash_logout  .bashrc  .config/  eltex-pg1-v8_part.log  .lesshst  .profile  report_part1.txt  .viminfo
+
+eltex-pg1-v8@eltex-2026-autumn:~$ ls "$HOME"
+eltex-pg1-v8_part.log  report_part1.txt
+
+eltex-pg1-v8@eltex-2026-autumn:~$ ls -aF "$HOME" | tr ' ' '\n' | grep '^\.'
+./
+../
+.bash_history
+.bash_logout
+.bashrc
+.config/
+.lesshst
+.profile
+.viminfo
+
+eltex-pg1-v8@eltex-2026-autumn:~$ echo "$HISTTIMEFORMAT"
+
+eltex-pg1-v8@eltex-2026-autumn:~$ export HISTTIMEFORMAT='%F %T '
+
+eltex-pg1-v8@eltex-2026-autumn:~$ date
+Tue Oct 13 08:36:04 PM +07 2026
+
+eltex-pg1-v8@eltex-2026-autumn:~$ history 2
+  85  2026-10-13 20:36:04 date
+  86  2026-10-13 20:36:17 history 2
+
+eltex-pg1-v8@eltex-2026-autumn:~$ date
+Tue Oct 13 08:39:35 PM +07 2026
+
+eltex-pg1-v8@eltex-2026-autumn:~$ history | tail -n 3
+  86  2026-10-13 20:36:17 history 2
+  87  2026-10-13 20:39:35 date
+  88  2026-10-13 20:40:34 history | tail -n 3
+
+eltex-pg1-v8@eltex-2026-autumn:~$ tail -n 3 "$HISTFILE"
+screen -r 734724
+cat "$HOME/$(whoami)_part.log"
+screen -dr 734724
+
+# Из-за проблем с назначением переменной и её выводом пришлось переделывать пункт задания с настройкой автоматического сохранения набираемых команд
+
+eltex-pg1-v8@eltex-2026-autumn:~$ export PROMPT_COMMAND='history -a'
+
+eltex-pg1-v8@eltex-2026-autumn:~$ echo "$PROMPT_COMMAND"
+history -a
+
+eltex-pg1-v8@eltex-2026-autumn:~$ date
+Thu Oct 22 11:15:26 AM +07 2026
+
+eltex-pg1-v8@eltex-2026-autumn:~$ tail -n 3 "$HISTFILE"
+export PROMPT_COMMAND='history -a'
+echo "$PROMPT_COMMAND"
+date
+
+eltex-pg1-v8@eltex-2026-autumn:~$ ls -l "$HISTFILE"
+-rw------- 1 eltex-pg1-v8 eltex-pg1-v8 9042 Oct 22 11:16 /home/eltex-pg1-v8/.bash_history
+
+eltex-pg1-v8@eltex-2026-autumn:~$ echo "$HISTFILE"
+/home/eltex-pg1-v8/.bash_history
+
+eltex-pg1-v8@eltex-2026-autumn:~$ echo "$PROMPT_COMMAND"
+history -a
+
+eltex-pg1-v8@eltex-2026-autumn:~$ shopt histappend
+histappend      on
+
+eltex-pg1-v8@eltex-2026-autumn:~$ echo probe $(date +%s)
+probe 1792642701
+
+eltex-pg1-v8@eltex-2026-autumn:~$ ls -l "$HISTFILE"
+-rw------- 1 eltex-pg1-v8 eltex-pg1-v8 9140 Oct 22 11:18 /home/eltex-pg1-v8/.bash_history
+
+eltex-pg1-v8@eltex-2026-autumn:~$ tail -n 3 "$HISTFILE"
+shopt histappend
+echo probe $(date +%s)
+ls -l "$HISTFILE"
+
+eltex-pg1-v8@eltex-2026-autumn:~$ history 10
+  367  date
+  368  tail -n 3 "$HISTFILE"
+  369  ls -l "$HISTFILE"
+  370  echo "$HISTFILE"
+  371  echo "$PROMPT_COMMAND"
+  372  shopt histappend
+  373  echo probe $(date +%s)
+  374  ls -l "$HISTFILE"
+  375  tail -n 3 "$HISTFILE"
+  376  history 10
+
+eltex-pg1-v8@eltex-2026-autumn:~$ echo probe $(date +%s)
+probe 1792642765
+
+eltex-pg1-v8@eltex-2026-autumn:~$ tail -n 3 "$HISTFILE"
+tail -n 3 "$HISTFILE"
+history 10
+echo probe $(date +%s)
+
+eltex-pg1-v8@eltex-2026-autumn:~$ export DATE="$(date)"
+
+eltex-pg1-v8@eltex-2026-autumn:~$ echo "$DATE"
+Tue Oct 13 09:12:06 PM +07 2026
+
+eltex-pg1-v8@eltex-2026-autumn:~$ export TIME="$(date '+%T')"
+
+eltex-pg1-v8@eltex-2026-autumn:~$ echo "$TIME"
+21:18:24
+
+eltex-pg1-v8@eltex-2026-autumn:~$ export DATE_TIME="$DATE $TIME"
+
+eltex-pg1-v8@eltex-2026-autumn:~$ echo "$DATE_TIME"
+Tue Oct 13 09:12:06 PM +07 2026 21:18:24
+
+eltex-pg1-v8@eltex-2026-autumn:~$ ls /bin /sbin | tr ' ' '\n' | grep '[0-9]'
+addr2line
+b2sum
+base32
+base64
+bunzip2
+bzip2
+bzip2recover
+c89
+c89-gcc
+c99
+c99-gcc
+cpan5.36-x86_64-linux-gnu
+cpp-12
+diff3
+enc2xs
+gcc-12
+gcc-ar-12
+gcc-nm-12
+gcc-ranlib-12
+gcov-12
+gcov-dump-12
+gcov-tool-12
+grub-menulst2cfg
+grub-mkpasswd-pbkdf2
+grub-syslinux2cfg
+h2ph
+h2xs
+i386
+linux32
+linux64
+lto-dump-12
+md5sum
+md5sum.textutils
+pdb3
+pdb3.11
+perl5.36.0
+perl5.36-x86_64-linux-gnu
+ping4
+ping6
+pl2pm
+pod2html
+pod2man
+pod2text
+pod2usage
+py3clean
+py3compile
+py3versions
+pydoc3
+pydoc3.11
+pygettext3
+pygettext3.11
+python3
+python3.11
+sha1sum
+sha224sum
+sha256sum
+sha384sum
+sha512sum
+ssh-argv0
+systemd-id128
+traceroute6
+traceroute6.db
+x86_64
+x86_64-linux-gnu-addr2line
+x86_64-linux-gnu-ar
+x86_64-linux-gnu-as
+x86_64-linux-gnu-c++filt
+x86_64-linux-gnu-cpp
+x86_64-linux-gnu-cpp-12
+x86_64-linux-gnu-dwp
+x86_64-linux-gnu-elfedit
+x86_64-linux-gnu-gcc
+x86_64-linux-gnu-gcc-12
+x86_64-linux-gnu-gcc-ar
+x86_64-linux-gnu-gcc-ar-12
+x86_64-linux-gnu-gcc-nm
+x86_64-linux-gnu-gcc-nm-12
+x86_64-linux-gnu-gcc-ranlib
+x86_64-linux-gnu-gcc-ranlib-12
+x86_64-linux-gnu-gcov
+x86_64-linux-gnu-gcov-12
+x86_64-linux-gnu-gcov-dump
+x86_64-linux-gnu-gcov-dump-12
+x86_64-linux-gnu-gcov-tool
+x86_64-linux-gnu-gcov-tool-12
+x86_64-linux-gnu-gold
+x86_64-linux-gnu-gp-archive
+x86_64-linux-gnu-gp-collect-app
+x86_64-linux-gnu-gp-display-html
+x86_64-linux-gnu-gp-display-src
+x86_64-linux-gnu-gp-display-text
+x86_64-linux-gnu-gprof
+x86_64-linux-gnu-gprofng
+x86_64-linux-gnu-ld
+x86_64-linux-gnu-ld.bfd
+x86_64-linux-gnu-ld.gold
+x86_64-linux-gnu-lto-dump
+x86_64-linux-gnu-lto-dump-12
+x86_64-linux-gnu-nm
+x86_64-linux-gnu-objcopy
+x86_64-linux-gnu-objdump
+x86_64-linux-gnu-ranlib
+x86_64-linux-gnu-readelf
+x86_64-linux-gnu-size
+x86_64-linux-gnu-strings
+x86_64-linux-gnu-strip
+dumpe2fs
+e2freefrag
+e2fsck
+e2image
+e2label
+e2mmpstatus
+e2scrub
+e2scrub_all
+e2undo
+e4crypt
+e4defrag
+fsck.ext2
+fsck.ext3
+fsck.ext4
+killall5
+mke2fs
+mkfs.ext2
+mkfs.ext3
+mkfs.ext4
+resize2fs
+tune2fs
+update-grub2
+
+eltex-pg1-v8@eltex-2026-autumn:~$ PS1='\u@\h-\A > '
+
+eltex-pg1-v8@eltex-2026-autumn-22:14 > PS1='$USER@$HOSTNAME-$(date +%H:%M) > '
+
+eltex-pg1-v8@eltex-2026-autumn-22:17 > export PS1
+
+eltex-pg1-v8@eltex-2026-autumn-22:21 > bash
+
+eltex-pg1-v8@eltex-2026-autumn:~$ echo "$PS1"
+${debian_chroot:+($debian_chroot)}\u@\h:\w$ 
+
+eltex-pg1-v8@eltex-2026-autumn:~$ exit
+exit
+
+eltex-pg1-v8@eltex-2026-autumn-22:23 > echo "$PS1"
+$USER@$HOSTNAME-$(date +%H:%M) > 
+
+eltex-pg1-v8@eltex-2026-autumn-22:23 > bash --norc
+
+eltex-pg1-v8@eltex-2026-autumn-22:28 > mkdir "$HOME/$(date +%Y)-"{01..12}
+
+eltex-pg1-v8@eltex-2026-autumn-22:36 > ls "$HOME"
+2026-01  2026-02  2026-03  2026-04  2026-05  2026-06  2026-07  2026-08  2026-09  2026-10  2026-11  2026-12  eltex-pg1-v8_part.log  report_part1.txt
+
+eltex-pg1-v8@eltex-2026-autumn-22:36 > exit
+exit
